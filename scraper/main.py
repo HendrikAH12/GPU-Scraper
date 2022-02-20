@@ -2,7 +2,7 @@ import concurrent.futures
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from fake_useragent import UserAgent
-import bs4, time
+import bs4, time, json
 
 def create_driver():
     ua = UserAgent()
@@ -42,11 +42,12 @@ links = [
 ]
 
 def scraper():
-    time_start = time.time()
     with concurrent.futures.ThreadPoolExecutor() as executor:
         futures = [executor.submit(get_gpu, link) for link in links]
-        return_value = [f.result()[0] for f in futures]
+        returned_values = [f.result()[0] for f in futures]
+        
+    with open("data.txt", "w") as outfile:
+        outfile.write(json.dumps(returned_values, indent=4))
 
-        return return_value, "{:.2f}".format(time.time() - time_start)
-
-print(scraper())
+if __name__ == "__main__":
+    scraper()
