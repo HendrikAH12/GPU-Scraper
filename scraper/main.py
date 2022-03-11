@@ -19,12 +19,13 @@ def get_gpu(url, webdriver=None):
         time.sleep(5)
         html = driver.page_source
         soup = bs4.BeautifulSoup(html, "html.parser")
-        item = soup.find("a", {"class": "ctn-produto"})
+        items = soup.find_all("a", {"class": "ctn-produto"})
 
-        gpus.append({
-            "name": item.find("div", {"class": "pnome"}).text[15:70],
-            "price": item.find("span", {"class": "pvalor"}).findChildren("strong", recursive=True)[0].text[4:]
-        })
+        for product in items:
+            gpus.append({
+                "name": product.find("div", {"class": "pnome"}).text[15:70],
+                "price": product.find("span", {"class": "pvalor"}).findChildren("strong", recursive=True)[0].text[4:]
+            })
 
     if webdriver:
         append_gpu(webdriver)
