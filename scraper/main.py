@@ -1,7 +1,4 @@
-from ast import Break
 import concurrent.futures
-from gettext import NullTranslations
-from sys import breakpointhook
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from fake_useragent import UserAgent
